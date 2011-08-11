@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="jwplayer/jwplayer.js"></script>
+    <script type="text/javascript" src="flowplayer/flowplayer-3.2.6.min.js"></script>
+    <script>
+
+function play() {
+    try {
+        $('#stage').empty();
+        var playerType = $('#playerType').val();
+        var w = $('#width').val();
+        var h = $('#height').val();
+        var s = $('#video').val();
+
+        window[playerType + "Play"](w, h, s);
+    } catch (err) {
+        console.log('oh oh');
+        console.log(err);
+    }
+
+    return false;
+}
+
+function jwplayerPlay(w, h, s) {
+    $('#stage').append("<div id='player'></player>");
+    var player = jwplayer('player');
+    player.setup({
+        'flashplayer': 'jwplayer/player.swf',
+        'id': 'player',
+        'width': w,
+        'height': h,
+        'autoplay': true,
+        'file': s
+    });
+}
+
+function flowplayerPlay(w, h, s) {
+    $('#stage').append("<div id='player'></player>");
+    $('#player').width(w);
+    $('#player').height(h);
+    flowplayer("player", "flowplayer/flowplayer-3.2.7.swf", {
+        clip: {
+            url: s,
+            autoPlay: true
+        }
+    });
+}
+
+function html5Play(w, h, s) {
+    var player = $('#stage');
+    player.append('<video width="' + w + '" height="' + h + '"><source src="' + s + '"/></video>');
+}
+
+    </script>
+</head>
+
+<body>
+
+<form onsubmit="return play();">
+    <label for="player">playerType</label>
+    <select name="playerType" id="playerType">
+        <option value="jwplayer">jwplayer</option>
+        <option value="flowplayer">flowplayer</option>
+        <!--<option value="html5">html5</option>-->
+    </select>
+    <label for="width">width</label><input type="text" name="width" id="width" value="320"/>
+    <label for="height">height</label><input type="text" name="height" id="height" value="240"/>
+    <label for="video">video</label><input type="text" name="video" id="video" value="file:///Users/danilo.moret/dev/upload-usuario/download-full/453540.flv"/>
+    <input type="submit" value="play"/>
+</form>
+
+<div id='stage'></div>
+
+</body>
+
+</html>
